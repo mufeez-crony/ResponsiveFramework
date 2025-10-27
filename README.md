@@ -6,7 +6,17 @@
 
 > ### Responsiveness made simple
 
-The Responsive Framework includes widgets that help developers build responsive apps for mobile, desktop, and website layouts.
+Responsive Framework adapts your UI to different screen sizes automatically. Create your UI once and have it display pixel perfect on mobile, tablet, and desktop!
+
+### The Problem
+Supporting multiple display sizes often means recreating the same layout multiple times. Under the traditional _Bootstrap_ approach, building responsive UI is time consuming, frustrating and repetitive. Furthermore, getting everything pixel perfect is near impossible and simple edits take hours.
+
+![Screenshots](packages/Bad%20Viewport%20Selector%20Animated.gif)
+
+### The Solution
+Use Responsive Framework to automatically scale your UI.
+
+> **ResponsiveBreakpoint.autoScale(600);**
 
 ## Demo
 
@@ -32,7 +42,7 @@ Import this library into your project:
 responsive_framework: ^latest_version
 ```
 
-Add `ResponsiveBreakpoints.builder` to your MaterialApp or CupertinoApp. Define your own breakpoints and labels.
+Add `ResponsiveWrapper.builder` to your MaterialApp or CupertinoApp.
 ```dart
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -40,90 +50,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      builder: (context, child) => ResponsiveBreakpoints.builder(
-        child: child!,
-        breakpoints: [
-          const Breakpoint(start: 0, end: 450, name: MOBILE),
-          const Breakpoint(start: 451, end: 800, name: TABLET),
-          const Breakpoint(start: 801, end: 1920, name: DESKTOP),
-          const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
-        ],
-      ),
+      builder: (context, child) => ResponsiveWrapper.builder(
+          child,
+          maxWidth: 1200,
+          minWidth: 480,
+          defaultScale: true,
+          breakpoints: [
+            ResponsiveBreakpoint.resize(480, name: MOBILE),
+            ResponsiveBreakpoint.autoScale(800, name: TABLET),
+            ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+          ],
+          background: Container(color: Color(0xFFF5F5F5))),
       initialRoute: "/",
     );
   }
 }
 ```
-
-Use the labels you defined for layouts and values.
-
-```dart
-// Example: if the screen is bigger than the Mobile breakpoint, build full width AppBar icons and labels.
-if (ResponsiveBreakpoints.of(context).largerThan(MOBILE))
-    FullWidthAppBarItems()
-
-// Booleans
-ResponsiveBreakpoints.of(context).isDesktop;
-ResponsiveBreakpoints.of(context).isTablet;
-ResponsiveBreakpoints.of(context).isMobile;
-ResponsiveBreakpoints.of(context).isPhone;
-
-// Conditionals
-ResponsiveBreakpoints.of(context).equals(DESKTOP)
-ResponsiveBreakpoints.of(context).largerThan(MOBILE)
-ResponsiveBreakpoints.of(context).smallerThan(TABLET)
-ResponsiveBreakpoints.of(context).between(MOBILE, TABLET)
-...
-```
-
-### Customization
-You can define your own breakpoint labels and use them in your conditionals.
-
-For example, if you're building a Material 3 Navigation Rail and want to expand the menu to full width once there is enough room, you can add a custom `EXPAND_SIDE_PANEL` breakpoint.
-
-```dart
-breakpoints: [
-  ...
-  const Breakpoint(start: 801, end: 1920, name: DESKTOP),
-  const Breakpoint(start: 900, end: 900, name: 'EXPAND_SIDE_PANEL') <- Custom label.
-  const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
-  ...
-]
-```
-
-Then, in your code, show the Rail based on the breakpoint condition.
-
-> expand: ResponsiveBreakpoints.of(context).largerThan('EXPAND_SIDE_PANEL')
-
-### Responsive Framework Widgets
-The ResponsiveFramework includes a few custom widgets that supplement Flutter's responsive capabilities. Their usages are showcased in the demo projects.
-
-- *[ResponsiveValue](https://github.com/Codelessly/ResponsiveFramework/blob/master/lib/src/responsive_value.dart)*
-  - *[ResponsiveVisibility](https://github.com/Codelessly/ResponsiveFramework/blob/master/lib/src/responsive_value.dart)*
-  - *[ResponsiveConstraints](https://github.com/Codelessly/ResponsiveFramework/blob/master/lib/src/responsive_value.dart)*
-- *[ResponsiveRowColumn](https://github.com/Codelessly/ResponsiveFramework/blob/master/lib/src/responsive_row_column.dart)*
-- *[ResponsiveGridView](https://github.com/Codelessly/ResponsiveFramework/blob/master/lib/src/responsive_grid.dart)*
-- *[ResponsiveScaledBox](https://github.com/Codelessly/ResponsiveFramework/blob/master/lib/src/responsive_scaled_box.dart)*
-- *[MaxWidthBox](https://github.com/Codelessly/ResponsiveFramework/blob/master/lib/src/max_width_box.dart)*
-
-
-## Legacy ReadMe (v0.2.0 and below)
-
-### ResponsiveWrapper Migration
-[v1.0.0 Migration Guide](https://github.com/Codelessly/ResponsiveFramework/blob/master/migration_0.2.0_to_1.0.0.md)
-
-### The remainder of the legacy ReadMe is preserved below as the concepts are still useful and used by the new widgets. ResponsiveWrapper has been deprecated and removed.
-
-### The Problem
-Supporting multiple display sizes often means recreating the same layout multiple times. Under the traditional _Bootstrap_ approach, building responsive UI is time consuming, frustrating and repetitive. Furthermore, getting everything pixel perfect is near impossible and simple edits take hours.
-
-![Screenshots](packages/Bad%20Viewport%20Selector%20Animated.gif)
-
-### The Solution
-Use Responsive Framework to automatically scale your UI.
-
-> **ResponsiveBreakpoint.autoScale(600);**
-
+That's it!
 
 ## AutoScale
 
@@ -255,7 +198,6 @@ Now you can proudly display the time and headache saved by using Responsive Fram
 **Development:** 
 * [Ray Li](https://github.com/searchy2)
 * [Spencer Lindemuth](https://github.com/SpencerLindemuth)
-* [Trefa1998](https://github.com/Trefa1998)
 * *add yourself here by contributing*
 
 **Sponsor:** [Codelessly - Flutter App UI and Website Builder](https://codelessly.com/?utm_medium=link&utm_campaign=direct)
@@ -289,7 +231,7 @@ Flutter is a game-changing technology that will revolutionize not just developme
 
     BSD Zero Clause License
 
-    Copyright © 2024 Codelessly
+    Copyright © 2020 Codelessly
 
     Permission to use, copy, modify, and/or distribute this software for any
     purpose with or without fee is hereby granted.
